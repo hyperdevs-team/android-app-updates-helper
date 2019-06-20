@@ -1,4 +1,4 @@
-# AppUpdatesHelper
+# Android App Updates Helper
 [![Release](https://jitpack.io/v/bq/android-app-updates-helper.svg)](https://jitpack.io/#bq/android-app-updates-helper)
 
 This utility library aims to help Android developers to use the [Google Play In-App Updates API](https://developer.android.com/guide/app-bundle/in-app-updates) in an easy way.
