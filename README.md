@@ -3,7 +3,7 @@
 
 This utility library aims to help Android developers to use the [Google Play In-App Updates API](https://developer.android.com/guide/app-bundle/in-app-updates) in an easy way.
 
-**It's highly encouraged that you first read the [Google Play In-App Updates API](https://developer.android.com/guide/app-bundle/in-app-updates) documentation first before using this library in order to understand the core concepts of the library.**
+**It's highly encouraged that you first read the [Google Play In-App Updates API](https://developer.android.com/guide/app-bundle/in-app-updates) documentation before using this library in order to understand the core concepts of the library.**
 
 ## Installation
 Add the following dependencies to your main `build.gradle`:
