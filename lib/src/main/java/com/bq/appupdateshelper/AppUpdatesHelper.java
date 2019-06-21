@@ -32,6 +32,8 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -117,7 +119,7 @@ public class AppUpdatesHelper {
      * @param getUpdateInfoListener Callback that will emit an {@link AppUpdateInfoResult} object after finishing
      *                              querying for possible updates.
      */
-    public void getAppUpdateInfo(@NonNull final GetUpdateInfoListener getUpdateInfoListener) {
+    public void getAppUpdateInfo(@NonNull final GetUpdateInfoListener getUpdateInfoListener) throws IllegalStateException {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() before requesting update info");
 
@@ -148,7 +150,7 @@ public class AppUpdatesHelper {
      *
      * @param activity The {@link Activity} to link to the update.
      */
-    public void startImmediateUpdate(@NonNull Activity activity) {
+    public void startImmediateUpdate(@NonNull Activity activity) throws IllegalStateException {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
                 "before requesting an immediate update");
@@ -176,7 +178,7 @@ public class AppUpdatesHelper {
      *
      * @param activity The {@link Activity} to link to the update.
      */
-    public void startFlexibleUpdate(@NonNull Activity activity) {
+    public void startFlexibleUpdate(@NonNull Activity activity) throws IllegalStateException {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
                 "before requesting a flexible update");
@@ -253,7 +255,7 @@ public class AppUpdatesHelper {
      * The method must only be called after calling {@link #startListening(InstallStateListener)}
      * and {@link #getAppUpdateInfo(GetUpdateInfoListener)}.
      */
-    public void completeUpdate() {
+    public void completeUpdate() throws IllegalStateException {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
                 "before completing an update");
