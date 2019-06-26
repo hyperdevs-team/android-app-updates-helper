@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
-android {
-    compileSdkVersion 29
+apply plugin: 'com.gladed.androidgitversion'
 
+android {
+    compileSdkVersion project.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName androidGitVersion.name()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
