@@ -62,7 +62,7 @@ dependencies {
 // Build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier.set("sources")
 }
 
 // Build JavaDoc from source files
@@ -75,7 +75,7 @@ task javadoc(type: Javadoc) {
 
 // Build a jar with JavaDoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set("javadoc")
     from javadoc.destinationDir
 }
 
