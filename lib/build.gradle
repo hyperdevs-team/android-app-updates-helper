@@ -4,7 +4,7 @@ apply plugin: "com.gladed.androidgitversion"
 androidGitVersion {
     codeFormat "MMNNPP"
     format '%tag%'
-    tagPattern(/^[0-9]+.*/) // Tag names should follow the pattern vMM.NN.PP
+    tagPattern(/^[0-9]+.*/) // Tag names should follow the pattern MM.NN.PP
 }
 
 android {
