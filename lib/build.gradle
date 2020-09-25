@@ -35,7 +35,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // Needed for the in-app updates API
-    implementation "com.google.android.play:core:1.8.0"
+    api "com.google.android.play:core:1.8.0"
 
     testImplementation 'junit:junit:4.13'
 
