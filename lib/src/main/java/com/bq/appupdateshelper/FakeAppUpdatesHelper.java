@@ -64,26 +64,6 @@ public class FakeAppUpdatesHelper extends AppUpdatesHelper {
     }
 
     /**
-     * Returns which type of update is partially allowed or null if no update is partially allowed.
-     */
-    @Nullable
-    public Integer getPartiallyAllowedUpdateType() {
-        return fakeAppUpdateManager.getPartiallyAllowedUpdateType();
-    }
-
-    /**
-     * In case the update is only partially allowed, which means that not all in-app update types are allowed by policy,
-     * the type of update which is exclusively allowed can be set here.
-     * <p>
-     * Also sets the error code to {@link InstallErrorCode.NO_ERROR_PARTIALLY_ALLOWED} to enable the partial error behaviour.
-     *
-     * @param allowedUpdate one of {@link AppUpdateType.FLEXIBLE} or {@link AppUpdateType.IMMEDIATE}, or null
-     */
-    public void setPartiallyAllowedUpdateType(@Nullable @AppUpdateType Integer allowedUpdate) {
-        fakeAppUpdateManager.setPartiallyAllowedUpdateType(allowedUpdate);
-    }
-
-    /**
      * Declares that no updates are available.
      */
     public void setUpdateNotAvailable() {

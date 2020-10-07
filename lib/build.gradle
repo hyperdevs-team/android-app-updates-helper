@@ -1,15 +1,20 @@
 apply plugin: 'com.android.library'
+apply plugin: "com.gladed.androidgitversion"
 
-apply plugin: 'com.gladed.androidgitversion'
+androidGitVersion {
+    codeFormat "MMNNPP"
+    format '%tag%'
+    tagPattern(/^[0-9]+.*/) // Tag names should follow the pattern MM.NN.PP
+}
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
+    compileSdkVersion 30
 
     defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode 1
+        minSdkVersion 21
+        targetSdkVersion 30
         versionName androidGitVersion.name()
+        versionCode androidGitVersion.code()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,16 +30,17 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api "androidx.annotation:annotation:1.1.0"
-    api "androidx.appcompat:appcompat:1.0.2"
+
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // Needed for the in-app updates API
-    api "com.google.android.play:core:1.6.1"
+    api "com.google.android.play:core:1.8.0"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
 /*
@@ -56,7 +62,7 @@ dependencies {
 // Build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier.set("sources")
 }
 
 // Build JavaDoc from source files
@@ -69,7 +75,7 @@ task javadoc(type: Javadoc) {
 
 // Build a jar with JavaDoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set("javadoc")
     from javadoc.destinationDir
 }
 
