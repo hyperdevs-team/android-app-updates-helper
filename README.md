@@ -20,14 +20,14 @@ Add the following dependencies to your app's `build.gradle`:
 * For Gradle < 4.0
     ```groovy
     dependencies {
-        compile "com.github.bq:android-app-updates-helper:1.0.1"
+        compile "com.github.bq:android-app-updates-helper:1.0.2"
     }
     ```
 
 * For Gradle 4.0+
     ```groovy
     dependencies {
-        implementation "com.github.bq:android-app-updates-helper:1.0.1"
+        implementation "com.github.bq:android-app-updates-helper:1.0.2"
     }
     ```
 
