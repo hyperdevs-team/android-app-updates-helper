@@ -39,12 +39,18 @@ Add the following dependencies to your app's `build.gradle`:
 * Request a flexible or immediate update with _AppUpdatesHelper.startFlexibleUpdate()_ or _AppUpdatesHelper.startImmediateUpdate()_
 
 Check the [example app](app) for more implementation details about [flexible](app/src/main/kotlin/com/bq/appupdateshelper/flexible/FlexibleUpdateActivity.kt)
-and [immediate](app/src/main/kotlin/com/bq/appupdateshelper/immediate/ImmediateUpdateActivity.kt) updates.
+and [immediate](app/src/main/kotlin/com/bq/appupdateshelper/immediate/ImmediateUpdateActivity.kt) updates. 
+
+If you use the example app, don't forget the following things when testing:
+* Change the package name of the example app to the one you'd like to test in-app updates with.
+* Sign the example app with the same keys that you used to sign the app you want to test in-app updates with.
+* If the app is not published yet, or you want to test with internal app sharing or closed tracks, ensure that any of your Google accounts in your device has access to said app in Google Play Store.
 
 You can also use a [fake implementation](app/src/main/kotlin/com/bq/appupdateshelper/fake/FakeUpdateActivity.kt) to test in-app updates.
 
 ## Authors & Collaborators
-* [Adrián García](https://github.com/adriangl) - Author
+* [Adrián García](https://github.com/adriangl) - Author and maintainer
+* [Daniel Sánchez Ceinos](https://github.com/danielceinos) - Contributor
 
 ## License
 ```
