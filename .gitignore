@@ -40,10 +40,10 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/caches
-.idea/codeStyles
 .idea/modules.xml
 .idea/misc.xml
 .idea/jarRepositories.xml
+.idea/vcs.xml
 
 # Keystore files
 *.jks
@@ -58,3 +58,9 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+# Signing configurations
+app_config.properties
+
+# Application ID configurations
+app_id.properties
