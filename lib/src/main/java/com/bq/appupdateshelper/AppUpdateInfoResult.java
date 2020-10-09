@@ -35,10 +35,13 @@ import static com.google.android.play.core.install.model.InstallStatus.DOWNLOADE
 public class AppUpdateInfoResult {
     public static final int VERSION_UNKNOWN = -1;
     public static final int VERSION_STALENESS_UNKNOWN = -1;
+    public static final int UPDATE_PRIORITY_UNKNOWN = -1;
+
 
     private final boolean isSuccessful;
     private final int versionCode;
     private final Availability updateAvailability;
+    private final int updatePriority;
     private final boolean canInstallFlexibleUpdate;
     private final boolean canInstallImmediateUpdate;
     private final int clientVersionStalenessDays;
@@ -49,8 +52,9 @@ public class AppUpdateInfoResult {
         this.isSuccessful = info != null && exception == null;
         this.versionCode = (info != null) ? info.availableVersionCode() : VERSION_UNKNOWN;
         this.updateAvailability = Availability.from(
-            (info != null) ? info.updateAvailability() : UpdateAvailability.UNKNOWN,
-            (info != null) ? info.installStatus() : InstallStatus.UNKNOWN);
+                (info != null) ? info.updateAvailability() : UpdateAvailability.UNKNOWN,
+                (info != null) ? info.installStatus() : InstallStatus.UNKNOWN);
+        this.updatePriority = info != null ? info.updatePriority() : UPDATE_PRIORITY_UNKNOWN;
         this.canInstallFlexibleUpdate = info != null && info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE);
         this.canInstallImmediateUpdate = info != null && info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE);
 
@@ -62,16 +66,20 @@ public class AppUpdateInfoResult {
         this.exception = exception;
     }
 
-    @VisibleForTesting AppUpdateInfoResult(boolean isSuccessful,
-                                           int versionCode,
-                                           Availability updateAvailability,
-                                           boolean canInstallFlexibleUpdate,
-                                           boolean canInstallImmediateUpdate,
-                                           int clientVersionStalenessDays,
-                                           Exception exception) {
+    @VisibleForTesting
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    AppUpdateInfoResult(boolean isSuccessful,
+                        int versionCode,
+                        Availability updateAvailability,
+                        int updatePriority,
+                        boolean canInstallFlexibleUpdate,
+                        boolean canInstallImmediateUpdate,
+                        int clientVersionStalenessDays,
+                        Exception exception) {
         this.isSuccessful = isSuccessful;
         this.versionCode = versionCode;
         this.updateAvailability = updateAvailability;
+        this.updatePriority = updatePriority;
         this.canInstallFlexibleUpdate = canInstallFlexibleUpdate;
         this.canInstallImmediateUpdate = canInstallImmediateUpdate;
         this.clientVersionStalenessDays = clientVersionStalenessDays;
@@ -88,6 +96,10 @@ public class AppUpdateInfoResult {
 
     public Availability getUpdateAvailability() {
         return updateAvailability;
+    }
+
+    public int getUpdatePriority() {
+        return updatePriority;
     }
 
     public int getClientVersionStalenessDays() {
@@ -120,6 +132,7 @@ public class AppUpdateInfoResult {
         AppUpdateInfoResult that = (AppUpdateInfoResult) o;
         return isSuccessful == that.isSuccessful &&
                 versionCode == that.versionCode &&
+                updatePriority == that.updatePriority &&
                 canInstallFlexibleUpdate == that.canInstallFlexibleUpdate &&
                 canInstallImmediateUpdate == that.canInstallImmediateUpdate &&
                 clientVersionStalenessDays == that.clientVersionStalenessDays &&
@@ -127,12 +140,11 @@ public class AppUpdateInfoResult {
                 exception.equals(that.exception);
     }
 
-
     @Override
     public int hashCode() {
-        return Objects.hash(
-                isSuccessful, versionCode, updateAvailability, canInstallFlexibleUpdate,
-                canInstallImmediateUpdate, clientVersionStalenessDays, exception);
+        return Objects.hash(isSuccessful, versionCode, updateAvailability,
+                updatePriority, canInstallFlexibleUpdate, canInstallImmediateUpdate,
+                clientVersionStalenessDays, exception);
     }
 
     @Override
@@ -141,6 +153,7 @@ public class AppUpdateInfoResult {
                 "isSuccessful=" + isSuccessful +
                 ", versionCode=" + versionCode +
                 ", updateAvailability=" + updateAvailability +
+                ", updatePriority=" + updatePriority +
                 ", canInstallFlexibleUpdate=" + canInstallFlexibleUpdate +
                 ", canInstallImmediateUpdate=" + canInstallImmediateUpdate +
                 ", clientVersionStalenessDays=" + clientVersionStalenessDays +
