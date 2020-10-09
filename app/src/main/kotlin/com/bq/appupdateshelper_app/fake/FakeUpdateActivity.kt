@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bq.appupdateshelper.fake
+package com.bq.appupdateshelper_app.fake
 
 import android.content.Context
 import android.content.Intent
@@ -26,8 +26,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bq.appupdateshelper.AppUpdateInfoResult
 import com.bq.appupdateshelper.AppUpdateInstallState.Status.*
 import com.bq.appupdateshelper.FakeAppUpdatesHelper
-import com.bq.appupdateshelper.R
-import com.bq.appupdateshelper.misc.showToast
+import com.bq.appupdateshelper_app.databinding.FakeUpdateActivityBinding
+import com.bq.appupdateshelper_app.R
+import com.bq.appupdateshelper_app.misc.showToast
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -48,12 +49,17 @@ class FakeUpdateActivity : AppCompatActivity() {
 
     private lateinit var fakeAppUpdatesHelper: FakeAppUpdatesHelper
 
+    private lateinit var binding: FakeUpdateActivityBinding
+
     private val startUpdateButton: Button
-        get() = findViewById(R.id.start_update_button)
+        get() = binding.startUpdateButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fake_update)
+
+        binding = FakeUpdateActivityBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+        }
 
         setTitle(R.string.activity_fake_update_title)
 
@@ -86,16 +92,16 @@ class FakeUpdateActivity : AppCompatActivity() {
                 DOWNLOADED -> {
                     showToast("The update has been downloaded!")
 
-                    Snackbar.make(findViewById(android.R.id.content), "Install the update?", Snackbar.LENGTH_INDEFINITE)
-                        .apply {
-                            setAction("Install") {
-                                fakeAppUpdatesHelper.completeUpdate()
+                    Snackbar.make(binding.root, "Install the update?", Snackbar.LENGTH_INDEFINITE)
+                            .apply {
+                                setAction("Install") {
+                                    fakeAppUpdatesHelper.completeUpdate()
 
-                                // Fake installation process
-                                fakeAppUpdatesHelper.completeFakeUpdate()
+                                    // Fake installation process
+                                    fakeAppUpdatesHelper.completeFakeUpdate()
+                                }
                             }
-                        }
-                        .show()
+                            .show()
                 }
                 INSTALLING -> {
                     showToast("The update is being installed!")
@@ -106,13 +112,13 @@ class FakeUpdateActivity : AppCompatActivity() {
                 FAILED -> {
                     showToast("The update failed! Reason: ${installState.errorCode}")
 
-                    Snackbar.make(findViewById(android.R.id.content), "Retry?", Snackbar.LENGTH_LONG)
-                        .apply {
-                            setAction("Retry") {
-                                fakeAppUpdatesHelper.startImmediateUpdate(this@FakeUpdateActivity)
+                    Snackbar.make(binding.root, "Retry?", Snackbar.LENGTH_LONG)
+                            .apply {
+                                setAction("Retry") {
+                                    fakeAppUpdatesHelper.startImmediateUpdate(this@FakeUpdateActivity)
+                                }
                             }
-                        }
-                        .show()
+                            .show()
                 }
                 CANCELED -> {
                     showToast("The user canceled the flexible update!")
@@ -161,7 +167,7 @@ class FakeUpdateActivity : AppCompatActivity() {
                     }
                 } else {
                     showToast("The update info could not be retrieved, " +
-                              "cause: ${appUpdateInfoResult.exception!!.message}")
+                            "cause: ${appUpdateInfoResult.exception!!.message}")
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 BQ
+ * Copyright (C) 2020 BQ
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bq.appupdateshelper.flexible
+package com.bq.appupdateshelper_app.flexible
 
 import android.content.Context
 import android.content.Intent
@@ -25,8 +25,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bq.appupdateshelper.AppUpdateInfoResult
 import com.bq.appupdateshelper.AppUpdateInstallState.Status.*
 import com.bq.appupdateshelper.AppUpdatesHelper
-import com.bq.appupdateshelper.R
-import com.bq.appupdateshelper.misc.showToast
+import com.bq.appupdateshelper_app.databinding.FlexibleUpdateActivityBinding
+import com.bq.appupdateshelper_app.R
+import com.bq.appupdateshelper_app.misc.showToast
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -44,12 +45,16 @@ class FlexibleUpdateActivity : AppCompatActivity() {
 
     private lateinit var appUpdatesHelper: AppUpdatesHelper
 
+    private lateinit var binding: FlexibleUpdateActivityBinding
+
     private val startUpdateButton: Button
-        get() = findViewById(R.id.start_update_button)
+        get() = binding.startUpdateButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_flexible_update)
+        binding = FlexibleUpdateActivityBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+        }
 
         setTitle(R.string.activity_flexible_update_title)
 
@@ -89,13 +94,13 @@ class FlexibleUpdateActivity : AppCompatActivity() {
                     showToast("The update has been downloaded!")
                     // Prompt the user to install the update when we know that the update has been
                     // downloaded successfully
-                    Snackbar.make(findViewById(android.R.id.content), "Install the update?", Snackbar.LENGTH_INDEFINITE)
-                        .apply {
-                            setAction("Install") {
-                                appUpdatesHelper.completeUpdate()
+                    Snackbar.make(binding.root, "Install the update?", Snackbar.LENGTH_INDEFINITE)
+                            .apply {
+                                setAction("Install") {
+                                    appUpdatesHelper.completeUpdate()
+                                }
                             }
-                        }
-                        .show()
+                            .show()
                 }
                 INSTALLING -> {
                     showToast("The update is being installed!")
@@ -111,13 +116,13 @@ class FlexibleUpdateActivity : AppCompatActivity() {
                     // process if needed
                     showToast("The update failed! Reason: ${installState.errorCode}")
 
-                    Snackbar.make(findViewById(android.R.id.content), "Retry?", Snackbar.LENGTH_LONG)
-                        .apply {
-                            setAction("Retry") {
-                                appUpdatesHelper.startFlexibleUpdate(this@FlexibleUpdateActivity)
+                    Snackbar.make(binding.root, "Retry?", Snackbar.LENGTH_LONG)
+                            .apply {
+                                setAction("Retry") {
+                                    appUpdatesHelper.startFlexibleUpdate(this@FlexibleUpdateActivity)
+                                }
                             }
-                        }
-                        .show()
+                            .show()
                 }
                 CANCELED -> {
                     // This state is only reachable in flexible updates and it happens when the
@@ -167,7 +172,7 @@ class FlexibleUpdateActivity : AppCompatActivity() {
                     }
                 } else {
                     showToast("The update info could not be retrieved, " +
-                              "cause: ${appUpdateInfoResult.exception!!.message}")
+                            "cause: ${appUpdateInfoResult.exception!!.message}")
                 }
             }
         }

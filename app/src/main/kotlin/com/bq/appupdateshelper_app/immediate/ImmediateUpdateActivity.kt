@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 BQ
+ * Copyright (C) 2020 BQ
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bq.appupdateshelper.immediate
+package com.bq.appupdateshelper_app.immediate
 
 import android.content.Context
 import android.content.Intent
@@ -25,8 +25,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bq.appupdateshelper.AppUpdateInfoResult
 import com.bq.appupdateshelper.AppUpdateInstallState.Status.*
 import com.bq.appupdateshelper.AppUpdatesHelper
-import com.bq.appupdateshelper.R
-import com.bq.appupdateshelper.misc.showToast
+import com.bq.appupdateshelper_app.databinding.ImmediateUpdateActivityBinding
+import com.bq.appupdateshelper_app.R
+import com.bq.appupdateshelper_app.misc.showToast
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -44,12 +45,16 @@ class ImmediateUpdateActivity : AppCompatActivity() {
 
     private lateinit var appUpdatesHelper: AppUpdatesHelper
 
+    private lateinit var binding: ImmediateUpdateActivityBinding
+
     private val startUpdateButton: Button
-        get() = findViewById(R.id.start_update_button)
+        get() = binding.startUpdateButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_immediate_update)
+        binding = ImmediateUpdateActivityBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+        }
 
         setTitle(R.string.activity_immediate_update_title)
 
@@ -104,13 +109,13 @@ class ImmediateUpdateActivity : AppCompatActivity() {
                     // process if needed
                     showToast("The update failed! Reason: ${installState.errorCode}")
 
-                    Snackbar.make(findViewById(android.R.id.content), "Retry?", Snackbar.LENGTH_LONG)
-                        .apply {
-                            setAction("Retry") {
-                                appUpdatesHelper.startImmediateUpdate(this@ImmediateUpdateActivity)
+                    Snackbar.make(binding.root, "Retry?", Snackbar.LENGTH_LONG)
+                            .apply {
+                                setAction("Retry") {
+                                    appUpdatesHelper.startImmediateUpdate(this@ImmediateUpdateActivity)
+                                }
                             }
-                        }
-                        .show()
+                            .show()
                 }
                 CANCELED -> {
                     // This state is only reachable in flexible updates.
@@ -160,7 +165,7 @@ class ImmediateUpdateActivity : AppCompatActivity() {
                     }
                 } else {
                     showToast("The update info could not be retrieved, " +
-                              "cause: ${appUpdateInfoResult.exception!!.message}")
+                            "cause: ${appUpdateInfoResult.exception!!.message}")
                 }
             }
         }

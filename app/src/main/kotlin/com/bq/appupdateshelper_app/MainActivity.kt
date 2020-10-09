@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 BQ
+ * Copyright (C) 2020 BQ
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,33 @@
  * limitations under the License.
  */
 
-package com.bq.appupdateshelper
+package com.bq.appupdateshelper_app
 
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.bq.appupdateshelper.fake.FakeUpdateActivity
-import com.bq.appupdateshelper.flexible.FlexibleUpdateActivity
-import com.bq.appupdateshelper.immediate.ImmediateUpdateActivity
+import com.bq.appupdateshelper_app.databinding.MainActivityBinding
+import com.bq.appupdateshelper_app.fake.FakeUpdateActivity
+import com.bq.appupdateshelper_app.flexible.FlexibleUpdateActivity
+import com.bq.appupdateshelper_app.immediate.ImmediateUpdateActivity
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: MainActivityBinding
+
     private val immediateButton: Button
-        get() = findViewById(R.id.immediate_button)
+        get() = binding.immediateButton
 
     private val flexibleButton: Button
-        get() = findViewById(R.id.flexible_button)
+        get() = binding.flexibleButton
 
     private val fakeButton: Button
-        get() = findViewById(R.id.fake_button)
+        get() = binding.fakeButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = MainActivityBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+        }
 
         immediateButton.setOnClickListener {
             startActivity(ImmediateUpdateActivity.newIntent(this))

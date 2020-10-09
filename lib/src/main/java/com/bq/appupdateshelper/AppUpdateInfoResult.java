@@ -33,22 +33,31 @@ import static com.google.android.play.core.install.model.InstallStatus.DOWNLOADE
  * {@link AppUpdatesHelper#getAppUpdateInfo(GetUpdateInfoListener)}.
  */
 public class AppUpdateInfoResult {
+    public static final int VERSION_UNKNOWN = -1;
+    public static final int VERSION_STALENESS_UNKNOWN = -1;
+
     private final boolean isSuccessful;
     private final int versionCode;
     private final Availability updateAvailability;
     private final boolean canInstallFlexibleUpdate;
     private final boolean canInstallImmediateUpdate;
+    private final int clientVersionStalenessDays;
     private final Exception exception;
 
     AppUpdateInfoResult(@Nullable AppUpdateInfo info,
                         @Nullable Exception exception) {
         this.isSuccessful = info != null && exception == null;
-        this.versionCode = (info != null) ? info.availableVersionCode() : -1;
+        this.versionCode = (info != null) ? info.availableVersionCode() : VERSION_UNKNOWN;
         this.updateAvailability = Availability.from(
-            (info != null) ? info.updateAvailability() : -1,
-            (info != null) ? info.installStatus() : -1);
+            (info != null) ? info.updateAvailability() : UpdateAvailability.UNKNOWN,
+            (info != null) ? info.installStatus() : InstallStatus.UNKNOWN);
         this.canInstallFlexibleUpdate = info != null && info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE);
         this.canInstallImmediateUpdate = info != null && info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE);
+
+        Integer infoVersionStalenessDays =
+                info != null ? info.clientVersionStalenessDays() : Integer.valueOf(VERSION_STALENESS_UNKNOWN);
+        //noinspection ConstantConditions
+        this.clientVersionStalenessDays = infoVersionStalenessDays != null ? infoVersionStalenessDays : VERSION_STALENESS_UNKNOWN;
 
         this.exception = exception;
     }
@@ -57,12 +66,15 @@ public class AppUpdateInfoResult {
                                            int versionCode,
                                            Availability updateAvailability,
                                            boolean canInstallFlexibleUpdate,
-                                           boolean canInstallImmediateUpdate, Exception exception) {
+                                           boolean canInstallImmediateUpdate,
+                                           int clientVersionStalenessDays,
+                                           Exception exception) {
         this.isSuccessful = isSuccessful;
         this.versionCode = versionCode;
         this.updateAvailability = updateAvailability;
         this.canInstallFlexibleUpdate = canInstallFlexibleUpdate;
         this.canInstallImmediateUpdate = canInstallImmediateUpdate;
+        this.clientVersionStalenessDays = clientVersionStalenessDays;
         this.exception = exception;
     }
 
@@ -76,6 +88,10 @@ public class AppUpdateInfoResult {
 
     public Availability getUpdateAvailability() {
         return updateAvailability;
+    }
+
+    public int getClientVersionStalenessDays() {
+        return clientVersionStalenessDays;
     }
 
     /**
@@ -103,27 +119,33 @@ public class AppUpdateInfoResult {
         if (o == null || getClass() != o.getClass()) return false;
         AppUpdateInfoResult that = (AppUpdateInfoResult) o;
         return isSuccessful == that.isSuccessful &&
-            versionCode == that.versionCode &&
-            canInstallFlexibleUpdate == that.canInstallFlexibleUpdate &&
-            canInstallImmediateUpdate == that.canInstallImmediateUpdate &&
-            updateAvailability == that.updateAvailability &&
-            Objects.equals(exception, that.exception);
+                versionCode == that.versionCode &&
+                canInstallFlexibleUpdate == that.canInstallFlexibleUpdate &&
+                canInstallImmediateUpdate == that.canInstallImmediateUpdate &&
+                clientVersionStalenessDays == that.clientVersionStalenessDays &&
+                updateAvailability == that.updateAvailability &&
+                exception.equals(that.exception);
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(isSuccessful, versionCode, updateAvailability, canInstallFlexibleUpdate, canInstallImmediateUpdate, exception);
+        return Objects.hash(
+                isSuccessful, versionCode, updateAvailability, canInstallFlexibleUpdate,
+                canInstallImmediateUpdate, clientVersionStalenessDays, exception);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "AppUpdateInfoResult{" +
-            "isSuccessful=" + isSuccessful +
-            ", versionCode=" + versionCode +
-            ", updateAvailability=" + updateAvailability +
-            ", canInstallFlexibleUpdate=" + canInstallFlexibleUpdate +
-            ", canInstallImmediateUpdate=" + canInstallImmediateUpdate +
-            ", exception=" + exception +
-            '}';
+                "isSuccessful=" + isSuccessful +
+                ", versionCode=" + versionCode +
+                ", updateAvailability=" + updateAvailability +
+                ", canInstallFlexibleUpdate=" + canInstallFlexibleUpdate +
+                ", canInstallImmediateUpdate=" + canInstallImmediateUpdate +
+                ", clientVersionStalenessDays=" + clientVersionStalenessDays +
+                ", exception=" + exception +
+                '}';
     }
 
     /**

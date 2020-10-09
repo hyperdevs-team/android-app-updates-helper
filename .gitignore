@@ -59,8 +59,5 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-# Signing configurations
+# App configuration properties
 app_config.properties
-
-# Application ID configurations
-app_id.properties
