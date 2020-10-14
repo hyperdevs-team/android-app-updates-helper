@@ -290,15 +290,10 @@ public class AppUpdatesHelper {
                     );
                     break;
                 default:
-                    // If everything goes well, check which updates are allowed and use the proper (no) error code
-                    boolean areAllUpdateFlowsAllowed = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                            && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE);
-
+                    // If everything goes well, do stuff
                     state = new AppUpdateInstallState(
                             AppUpdateInstallState.Status.UPDATE_ACCEPTED,
-                            areAllUpdateFlowsAllowed
-                                    ? AppUpdateInstallState.ErrorCode.NO_ERROR
-                                    : AppUpdateInstallState.ErrorCode.NO_ERROR_PARTIALLY_ALLOWED,
+                            AppUpdateInstallState.ErrorCode.NO_ERROR,
                             AppUpdateInstallState.BYTES_UNKNOWN,
                             AppUpdateInstallState.BYTES_UNKNOWN
                     );
