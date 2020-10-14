@@ -40,10 +40,42 @@ dependencies {
 </details>
 
 
-<details open><summary>Kotlin</summary>
+<details><summary>Kotlin</summary>
 ```kotlin
 dependencies {
     implementation("com.github.bq:android-app-updates-helper:1.0.2")
+}
+```
+</details>
+
+You'll also need to add support for Java 8 in your project. To do so:
+<details open><summary>Groovy</summary>
+```groovy
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // In Kotlin projects
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+```
+</details>
+
+<details><summary>Kotlin</summary>
+```kotlin
+android {
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 ```
 </details>

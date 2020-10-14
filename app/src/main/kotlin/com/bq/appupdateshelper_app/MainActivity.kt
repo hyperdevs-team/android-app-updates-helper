@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bq.appupdateshelper_app.databinding.MainActivityBinding
 import com.bq.appupdateshelper_app.fake.FakeUpdateActivity
 import com.bq.appupdateshelper_app.flexible.FlexibleUpdateActivity
+import com.bq.appupdateshelper_app.fragment.FragmentUpdateActivity
 import com.bq.appupdateshelper_app.immediate.ImmediateUpdateActivity
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
 
     private val flexibleButton: Button
         get() = binding.flexibleButton
+
+    private val fragmentButton: Button
+        get() = binding.fragmentButton
 
     private val fakeButton: Button
         get() = binding.fakeButton
@@ -48,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         flexibleButton.setOnClickListener {
             startActivity(FlexibleUpdateActivity.newIntent(this))
+        }
+
+        fragmentButton.setOnClickListener {
+            startActivity(FragmentUpdateActivity.newIntent(this))
         }
 
         fakeButton.setOnClickListener {

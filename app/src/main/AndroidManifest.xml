@@ -23,6 +23,8 @@
 
         <activity android:name=".flexible.FlexibleUpdateActivity"/>
 
+        <activity android:name=".fragment.FragmentUpdateActivity"/>
+
         <activity android:name=".fake.FakeUpdateActivity"/>
 
     </application>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2019 BQ
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,43 +14,52 @@
   ~ limitations under the License.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context="com.bq.appupdateshelper_app.MainActivity"
     tools:ignore="HardcodedText">
 
     <Button
         android:id="@+id/immediate_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Immediate update"
         app:layout_constraintBottom_toTopOf="@+id/flexible_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/flexible_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Flexible update"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/immediate_button" />
+
+    <Button
+        android:id="@+id/fragment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fragment update"
         app:layout_constraintBottom_toTopOf="@+id/fake_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/immediate_button"/>
+        app:layout_constraintTop_toBottomOf="@+id/flexible_button" />
 
     <Button
         android:id="@+id/fake_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Fake update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flexible_button"/>
+        app:layout_constraintTop_toBottomOf="@+id/fragment_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
