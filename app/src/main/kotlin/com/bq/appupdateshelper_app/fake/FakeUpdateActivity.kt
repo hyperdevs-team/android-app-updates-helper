@@ -90,7 +90,7 @@ class FakeUpdateActivity : AppCompatActivity() {
                     showToast("The update is downloading!")
                 }
                 DOWNLOADED -> {
-                    showToast("The update has been downloaded!")
+                    showToast("The update is downloading! Progress: ${installState.downloadProgress}")
 
                     Snackbar.make(binding.root, "Install the update?", Snackbar.LENGTH_INDEFINITE)
                             .apply {

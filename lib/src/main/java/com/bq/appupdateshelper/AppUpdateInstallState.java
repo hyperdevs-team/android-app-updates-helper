@@ -28,43 +28,89 @@ import androidx.annotation.NonNull;
  * Class that contains information about the app update installation state.
  */
 public class AppUpdateInstallState {
-    @NonNull private final Status status;
-    @NonNull private final ErrorCode errorCode;
+    static final long BYTES_UNKNOWN = 0;
+    static final long PROGRESS_UNKNOWN = 0;
 
-    AppUpdateInstallState(@NonNull Status status, @NonNull ErrorCode errorCode) {
+    @NonNull
+    private final Status status;
+    @NonNull
+    private final ErrorCode errorCode;
+    private final long bytesDownloaded;
+    private final long totalBytesToDownload;
+    private final float downloadProgress;
+
+    AppUpdateInstallState(@NonNull Status status,
+                          @NonNull ErrorCode errorCode,
+                          long bytesDownloaded,
+                          long totalBytesToDownload) {
         this.status = status;
         this.errorCode = errorCode;
+        this.bytesDownloaded = bytesDownloaded;
+        this.totalBytesToDownload = totalBytesToDownload;
+        if (status == Status.DOWNLOADED) {
+            this.downloadProgress = 100f;
+        } else if (totalBytesToDownload <= BYTES_UNKNOWN) {
+            this.downloadProgress = PROGRESS_UNKNOWN;
+        } else {
+            this.downloadProgress = bytesDownloaded * 100f / totalBytesToDownload;
+        }
     }
 
     AppUpdateInstallState(@NonNull InstallState state) {
-        this(Status.from(state), ErrorCode.from(state));
+        this(Status.from(state),
+                ErrorCode.from(state),
+                state.bytesDownloaded(),
+                state.totalBytesToDownload());
     }
 
-    @NonNull public Status getStatus() {
+    @NonNull
+    public Status getStatus() {
         return status;
     }
 
-    @NonNull public ErrorCode getErrorCode() {
+    @NonNull
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    @Override public boolean equals(Object o) {
+    public long getBytesDownloaded() {
+        return bytesDownloaded;
+    }
+
+    public long getTotalBytesToDownload() {
+        return totalBytesToDownload;
+    }
+
+    public float getDownloadProgress() {
+        return downloadProgress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AppUpdateInstallState that = (AppUpdateInstallState) o;
-        return status == that.status &&
-            errorCode == that.errorCode;
+        return bytesDownloaded == that.bytesDownloaded &&
+                totalBytesToDownload == that.totalBytesToDownload &&
+                Float.compare(that.downloadProgress, downloadProgress) == 0 &&
+                status == that.status &&
+                errorCode == that.errorCode;
     }
 
-    @Override public int hashCode() {
-        return Objects.hash(status, errorCode);
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, errorCode, bytesDownloaded, totalBytesToDownload, downloadProgress);
     }
 
-    @NonNull @Override public String toString() {
+    @Override
+    public String toString() {
         return "AppUpdateInstallState{" +
-            "status=" + status +
-            ", errorCode=" + errorCode +
-            '}';
+                "status=" + status +
+                ", errorCode=" + errorCode +
+                ", bytesDownloaded=" + bytesDownloaded +
+                ", totalBytesToDownload=" + totalBytesToDownload +
+                ", downloadProgress=" + downloadProgress +
+                '}';
     }
 
     /**
@@ -176,7 +222,8 @@ public class AppUpdateInstallState {
             }
         }
 
-        @InstallErrorCode int getValue() {
+        @InstallErrorCode
+        int getValue() {
             switch (this) {
                 case NO_ERROR:
                     return InstallErrorCode.NO_ERROR;

@@ -88,7 +88,7 @@ class FlexibleUpdateActivity : AppCompatActivity() {
                     showToast("Waiting for update to start!")
                 }
                 DOWNLOADING -> {
-                    showToast("The update is downloading!")
+                    showToast("The update is downloading! Progress: ${installState.downloadProgress}")
                 }
                 DOWNLOADED -> {
                     showToast("The update has been downloaded!")
