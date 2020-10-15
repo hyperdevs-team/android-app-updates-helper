@@ -9,6 +9,7 @@ This utility library aims to help Android developers to use the [Google Play In-
 In your main `build.gradle`, add [jitpack.io](https://jitpack.io/) repository in the `allprojects` block:
 
 <details open><summary>Groovy</summary>
+
 ```groovy
 allprojects {
     repositories {
@@ -19,6 +20,7 @@ allprojects {
 </details>
 
 <details><summary>Kotlin</summary>
+
 ```kotlin
 allprojects {
     repositories {
@@ -32,6 +34,7 @@ allprojects {
 Add the following dependencies to your app or library's `build.gradle`:
 
 <details open><summary>Groovy</summary>
+
 ```groovy
 dependencies {
     implementation "com.github.bq:android-app-updates-helper:1.0.2"
@@ -41,6 +44,7 @@ dependencies {
 
 
 <details><summary>Kotlin</summary>
+
 ```kotlin
 dependencies {
     implementation("com.github.bq:android-app-updates-helper:1.0.2")
@@ -50,14 +54,13 @@ dependencies {
 
 You'll also need to add support for Java 8 in your project. To do so:
 <details open><summary>Groovy</summary>
+
 ```groovy
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    // In Kotlin projects
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -66,13 +69,13 @@ android {
 </details>
 
 <details><summary>Kotlin</summary>
+
 ```kotlin
 android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -82,8 +85,8 @@ android {
 
 ## How to use
 * Create a new _AppUpdatesHelper_.
-* Start listening for app update changes with _AppUpdatesHelper.startListening()_, for example in _onCreate()_.
-* Stop listening for app update changes with _AppUpdatesHelper.stopListening()_ in _onDestroy()_.
+* Start listening for app update changes with _AppUpdatesHelper.startListening()_, for example in _Activity.onCreate()_ or in _Fragment.onViewCreated()_.
+* Stop listening for app update changes with _AppUpdatesHelper.stopListening()_ in _Activity.onDestroy()_ or in _Fragment.onDestroyView()_.
 * Request app update information with _AppUpdatesHelper.getAppUpdateInfo()_.
 * Request a flexible or immediate update with _AppUpdatesHelper.startFlexibleUpdate()_ or _AppUpdatesHelper.startImmediateUpdate()_
 
