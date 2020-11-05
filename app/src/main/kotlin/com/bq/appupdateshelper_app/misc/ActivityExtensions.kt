@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bq.appupdateshelper.misc
+package com.bq.appupdateshelper_app.misc
 
 import android.app.Activity
 import android.widget.Toast

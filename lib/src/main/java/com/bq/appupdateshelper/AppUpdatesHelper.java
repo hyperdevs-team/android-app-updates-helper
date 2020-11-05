@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -33,6 +34,7 @@ import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static com.google.android.play.core.install.model.ActivityResult.RESULT_IN_APP_UPDATE_FAILED;
@@ -41,14 +43,14 @@ import static com.google.android.play.core.install.model.ActivityResult.RESULT_I
  * Helper class used to simplify the use of the In-App Updates library from Google.
  * <p>
  * Its use is as follows:
- * - Register it using {@link #startListening(InstallStateListener)}, for example in {@link Activity#onCreate(Bundle)}.
- * - Unregister it using {@link #stopListening()}, for example in {@link Activity#onDestroy()}.
+ * - Register it using {@link #startListening(InstallStateListener)}, for example in {@link Activity#onCreate(Bundle)} or in {@link Fragment#onViewCreated(View, Bundle)}.
+ * - Unregister it using {@link #stopListening()}, for example in {@link Activity#onDestroy()} or in {@link Fragment#onDestroyView()}.
  * - Call {@link #onUpdateStatusResult(int, int)} in your Activity's
- * {@link Activity#onActivityResult(int, int, Intent)} so the helper can properly report status
+ * {@link Activity#onActivityResult(int, int, Intent)} or your Fragment's {@link Fragment#onActivityResult(int, int, Intent)} so the helper can properly report status
  * updates.
  * - When you want to check if there are any updates, call {@link #getAppUpdateInfo(GetUpdateInfoListener)}.
- * - When you want to perform an update, call {@link #startImmediateUpdate(Activity)}
- * or {@link #startFlexibleUpdate(Activity)} after successfully receiving an update via
+ * - When you want to perform an update, call {@link #startImmediateUpdate(Activity)}/{@link #startImmediateUpdate(Fragment)}
+ * or {@link #startFlexibleUpdate(Activity)}/{@link #startFlexibleUpdate(Fragment)} after successfully receiving an update via
  * {@link #getAppUpdateInfo(GetUpdateInfoListener)}.
  */
 @SuppressWarnings("JavadocReference")
@@ -90,7 +92,8 @@ public class AppUpdatesHelper {
             this.isListening = true;
             this.installStateListener = installStateListener;
             this.installStateUpdatedListener = new InstallStateUpdatedListener() {
-                @Override public void onStateUpdate(InstallState installState) {
+                @Override
+                public void onStateUpdate(InstallState installState) {
                     AppUpdateInstallState state = new AppUpdateInstallState(installState);
                     Log.d(TAG, "Update status result: " + state.toString());
 
@@ -124,7 +127,8 @@ public class AppUpdatesHelper {
         final Task<AppUpdateInfo> appUpdateInfoTask = manager.getAppUpdateInfo();
 
         appUpdateInfoTask.addOnCompleteListener(new OnCompleteListener<AppUpdateInfo>() {
-            @Override public void onComplete(Task<AppUpdateInfo> task) {
+            @Override
+            public void onComplete(Task<AppUpdateInfo> task) {
                 Exception exception = null;
                 if (task.isSuccessful()) {
                     appUpdateInfo = task.getResult();
@@ -151,17 +155,44 @@ public class AppUpdatesHelper {
     public void startImmediateUpdate(@NonNull Activity activity) {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
-                "before requesting an immediate update");
+                    "before requesting an immediate update");
         if (appUpdateInfo == null)
             throw new IllegalStateException("You must call getAppUpdateInfo() " +
-                "with a successful response before requesting an immediate update");
+                    "with a successful response before requesting an immediate update");
 
         try {
             manager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.IMMEDIATE,
-                activity,
-                IMMEDIATE_UPDATE_REQUEST_CODE);
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    activity,
+                    IMMEDIATE_UPDATE_REQUEST_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Starts an immediate update.
+     * It will receive callbacks in {@link InstallStateListener}.
+     * <p>
+     * The method must only be called after calling {@link #startListening(InstallStateListener)}.
+     *
+     * @param activity The {@link Fragment} to link to the update.
+     */
+    public void startImmediateUpdate(@NonNull Fragment fragment) {
+        if (!isListening)
+            throw new IllegalStateException("You must call startListening() " +
+                    "before requesting an immediate update");
+        if (appUpdateInfo == null)
+            throw new IllegalStateException("You must call getAppUpdateInfo() " +
+                    "with a successful response before requesting an immediate update");
+
+        try {
+            manager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    fragment::startIntentSenderForResult,
+                    IMMEDIATE_UPDATE_REQUEST_CODE);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
@@ -179,17 +210,45 @@ public class AppUpdatesHelper {
     public void startFlexibleUpdate(@NonNull Activity activity) {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
-                "before requesting a flexible update");
+                    "before requesting a flexible update");
         if (appUpdateInfo == null)
             throw new IllegalStateException("You must call getAppUpdateInfo() " +
-                "with a successful response before requesting a flexible update");
+                    "with a successful response before requesting a flexible update");
 
         try {
             manager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
-                activity,
-                FLEXIBLE_UPDATE_REQUEST_CODE);
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    activity,
+                    FLEXIBLE_UPDATE_REQUEST_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Starts a flexible update.
+     * It will receive callbacks in {@link InstallStateListener}.
+     * <p>
+     * The method must only be called after calling {@link #startListening(InstallStateListener)}
+     * and {@link #getAppUpdateInfo(GetUpdateInfoListener)}.
+     *
+     * @param activity The {@link Fragment} to link to the update.
+     */
+    public void startFlexibleUpdate(@NonNull Fragment fragment) {
+        if (!isListening)
+            throw new IllegalStateException("You must call startListening() " +
+                    "before requesting a flexible update");
+        if (appUpdateInfo == null)
+            throw new IllegalStateException("You must call getAppUpdateInfo() " +
+                    "with a successful response before requesting a flexible update");
+
+        try {
+            manager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    fragment::startIntentSenderForResult,
+                    FLEXIBLE_UPDATE_REQUEST_CODE);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
@@ -209,31 +268,34 @@ public class AppUpdatesHelper {
                 case RESULT_CANCELED:
                     if (requestCode == IMMEDIATE_UPDATE_REQUEST_CODE)
                         state = new AppUpdateInstallState(
-                            AppUpdateInstallState.Status.DENIED,
-                            AppUpdateInstallState.ErrorCode.ERROR_INSTALL_NOT_ALLOWED
+                                AppUpdateInstallState.Status.DENIED,
+                                AppUpdateInstallState.ErrorCode.ERROR_INSTALL_NOT_ALLOWED,
+                                AppUpdateInstallState.BYTES_UNKNOWN,
+                                AppUpdateInstallState.BYTES_UNKNOWN
                         );
                     else
                         state = new AppUpdateInstallState(
-                            AppUpdateInstallState.Status.CANCELED,
-                            AppUpdateInstallState.ErrorCode.ERROR_INSTALL_NOT_ALLOWED);
+                                AppUpdateInstallState.Status.CANCELED,
+                                AppUpdateInstallState.ErrorCode.ERROR_INSTALL_NOT_ALLOWED,
+                                AppUpdateInstallState.BYTES_UNKNOWN,
+                                AppUpdateInstallState.BYTES_UNKNOWN);
                     break;
                 case RESULT_IN_APP_UPDATE_FAILED:
                     // We don't know why the update failed, so return an unknown error
                     state = new AppUpdateInstallState(
-                        AppUpdateInstallState.Status.FAILED,
-                        AppUpdateInstallState.ErrorCode.ERROR_UNKNOWN
+                            AppUpdateInstallState.Status.FAILED,
+                            AppUpdateInstallState.ErrorCode.ERROR_UNKNOWN,
+                            AppUpdateInstallState.BYTES_UNKNOWN,
+                            AppUpdateInstallState.BYTES_UNKNOWN
                     );
                     break;
                 default:
-                    // If everything goes well, check which updates are allowed and use the proper (no) error code
-                    boolean areAllUpdateFlowsAllowed = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE);
-
+                    // If everything goes well, do stuff
                     state = new AppUpdateInstallState(
-                        AppUpdateInstallState.Status.UPDATE_ACCEPTED,
-                        areAllUpdateFlowsAllowed
-                            ? AppUpdateInstallState.ErrorCode.NO_ERROR
-                            : AppUpdateInstallState.ErrorCode.NO_ERROR_PARTIALLY_ALLOWED
+                            AppUpdateInstallState.Status.UPDATE_ACCEPTED,
+                            AppUpdateInstallState.ErrorCode.NO_ERROR,
+                            AppUpdateInstallState.BYTES_UNKNOWN,
+                            AppUpdateInstallState.BYTES_UNKNOWN
                     );
                     break;
             }
@@ -256,10 +318,10 @@ public class AppUpdatesHelper {
     public void completeUpdate() {
         if (!isListening)
             throw new IllegalStateException("You must call startListening() " +
-                "before completing an update");
+                    "before completing an update");
         if (appUpdateInfo == null)
             throw new IllegalStateException("You must call getAppUpdateInfo() " +
-                "before completing an update");
+                    "before completing an update");
 
         manager.completeUpdate();
     }

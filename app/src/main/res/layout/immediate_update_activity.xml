@@ -20,38 +20,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     android:layout_width="match_parent"
-    tools:context=".MainActivity"
+    tools:context="com.bq.appupdateshelper_app.immediate.ImmediateUpdateActivity"
     tools:ignore="HardcodedText">
 
-    <Button
-        android:id="@+id/immediate_button"
+    <TextView
+        android:id="@+id/text_view_1"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Immediate update"
-        app:layout_constraintBottom_toTopOf="@+id/flexible_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Immediate updates example"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_view_2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:text="This example illustrates how immediate updates work in an usual app flow.\n\nClick the button to start the immediate updates flow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_1"/>
 
     <Button
-        android:id="@+id/flexible_button"
+        android:id="@+id/start_update_button"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:text="Flexible update"
-        app:layout_constraintBottom_toTopOf="@+id/fake_button"
+        android:text="Start immediate update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/immediate_button"/>
-
-    <Button
-        android:id="@+id/fake_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Fake update"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flexible_button"/>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_2"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

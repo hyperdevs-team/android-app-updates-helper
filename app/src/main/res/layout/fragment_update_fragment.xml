@@ -20,16 +20,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:layout_width="match_parent"
-    tools:context="com.bq.appupdateshelper.immediate.ImmediateUpdateActivity"
+    tools:context="com.bq.appupdateshelper_app.fragment.FragmentUpdateActivity"
     tools:ignore="HardcodedText">
 
     <TextView
         android:id="@+id/text_view_1"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Immediate updates example"
+        android:text="Fragment updates example"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -38,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text="This example illustrates how immediate updates work in an usual app flow.\n\nClick the button to start the immediate updates flow"
+        android:text="This example illustrates how you can also perform updates in a fragment instead of an activity.\n\nClick the button to start the flexible updates flow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_1"/>
 
@@ -47,8 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:text="Start immediate update"
+        android:text="Start flexible update in fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_2"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,43 +28,89 @@ import androidx.annotation.NonNull;
  * Class that contains information about the app update installation state.
  */
 public class AppUpdateInstallState {
-    @NonNull private final Status status;
-    @NonNull private final ErrorCode errorCode;
+    static final long BYTES_UNKNOWN = 0;
+    static final long PROGRESS_UNKNOWN = 0;
 
-    AppUpdateInstallState(@NonNull Status status, @NonNull ErrorCode errorCode) {
+    @NonNull
+    private final Status status;
+    @NonNull
+    private final ErrorCode errorCode;
+    private final long bytesDownloaded;
+    private final long totalBytesToDownload;
+    private final float downloadProgress;
+
+    AppUpdateInstallState(@NonNull Status status,
+                          @NonNull ErrorCode errorCode,
+                          long bytesDownloaded,
+                          long totalBytesToDownload) {
         this.status = status;
         this.errorCode = errorCode;
+        this.bytesDownloaded = bytesDownloaded;
+        this.totalBytesToDownload = totalBytesToDownload;
+        if (status == Status.DOWNLOADED) {
+            this.downloadProgress = 100f;
+        } else if (totalBytesToDownload <= BYTES_UNKNOWN) {
+            this.downloadProgress = PROGRESS_UNKNOWN;
+        } else {
+            this.downloadProgress = bytesDownloaded * 100f / totalBytesToDownload;
+        }
     }
 
     AppUpdateInstallState(@NonNull InstallState state) {
-        this(Status.from(state), ErrorCode.from(state));
+        this(Status.from(state),
+                ErrorCode.from(state),
+                state.bytesDownloaded(),
+                state.totalBytesToDownload());
     }
 
-    @NonNull public Status getStatus() {
+    @NonNull
+    public Status getStatus() {
         return status;
     }
 
-    @NonNull public ErrorCode getErrorCode() {
+    @NonNull
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    @Override public boolean equals(Object o) {
+    public long getBytesDownloaded() {
+        return bytesDownloaded;
+    }
+
+    public long getTotalBytesToDownload() {
+        return totalBytesToDownload;
+    }
+
+    public float getDownloadProgress() {
+        return downloadProgress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AppUpdateInstallState that = (AppUpdateInstallState) o;
-        return status == that.status &&
-            errorCode == that.errorCode;
+        return bytesDownloaded == that.bytesDownloaded &&
+                totalBytesToDownload == that.totalBytesToDownload &&
+                Float.compare(that.downloadProgress, downloadProgress) == 0 &&
+                status == that.status &&
+                errorCode == that.errorCode;
     }
 
-    @Override public int hashCode() {
-        return Objects.hash(status, errorCode);
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, errorCode, bytesDownloaded, totalBytesToDownload, downloadProgress);
     }
 
-    @NonNull @Override public String toString() {
+    @Override
+    public String toString() {
         return "AppUpdateInstallState{" +
-            "status=" + status +
-            ", errorCode=" + errorCode +
-            '}';
+                "status=" + status +
+                ", errorCode=" + errorCode +
+                ", bytesDownloaded=" + bytesDownloaded +
+                ", totalBytesToDownload=" + totalBytesToDownload +
+                ", downloadProgress=" + downloadProgress +
+                '}';
     }
 
     /**
@@ -127,37 +173,37 @@ public class AppUpdateInstallState {
 
     /**
      * Specific enum related to an app install error code. It will always be present in {@link AppUpdateInstallState}
-     * (even in non-error cases, then the value of this field will be NO_ERROR or NO_ERROR_PARTIALLY_ALLOWED)
+     * (even in non-error cases, then the value of this field will be NO_ERROR)
      * <p>
      * The enums represent the following states:
      * <p>
      * - NO_ERROR: No error occurred; all types of update flow are allowed.
-     * - NO_ERROR_PARTIALLY_ALLOWED: No error occurred; only some types of update flow are allowed, while others are forbidden.
      * - ERROR_UNKNOWN: An unknown error occurred.
-     * - ERROR_API_NOT_AVAILABLE: The API is not available on this device.
+     * - ERROR_API_NOT_AVAILABLE: The API is not available on this device (such as when the device is not supported).
      * - ERROR_INVALID_REQUEST: The request that was sent by the app is malformed.
      * - ERROR_INSTALL_UNAVAILABLE: The install is unavailable to this user or device.
      * - ERROR_INSTALL_NOT_ALLOWED: The download/install is not allowed, due to the current device state (e.g. low battery, low disk space…)
      * - ERROR_DOWNLOAD_NOT_PRESENT: The install/update has not been (fully) downloaded yet.
+     * - ERROR_APP_NOT_OWNED: The user hasn't acquired the app via Play
+     * - ERROR_PLAY_STORE_NOT_FOUND: The Play Store app is either not installed or not the official version.
      * - ERROR_INTERNAL_ERROR: An internal error happened in the Play Store.
      */
     public enum ErrorCode {
         NO_ERROR,
-        NO_ERROR_PARTIALLY_ALLOWED,
         ERROR_UNKNOWN,
         ERROR_API_NOT_AVAILABLE,
         ERROR_INVALID_REQUEST,
         ERROR_INSTALL_UNAVAILABLE,
         ERROR_INSTALL_NOT_ALLOWED,
         ERROR_DOWNLOAD_NOT_PRESENT,
+        ERROR_APP_NOT_OWNED,
+        ERROR_PLAY_STORE_NOT_FOUND,
         ERROR_INTERNAL_ERROR;
 
         static ErrorCode from(InstallState state) {
             switch (state.installErrorCode()) {
                 case InstallErrorCode.NO_ERROR:
                     return ErrorCode.NO_ERROR;
-                case InstallErrorCode.NO_ERROR_PARTIALLY_ALLOWED:
-                    return ErrorCode.NO_ERROR_PARTIALLY_ALLOWED;
                 case InstallErrorCode.ERROR_API_NOT_AVAILABLE:
                     return ErrorCode.ERROR_API_NOT_AVAILABLE;
                 case InstallErrorCode.ERROR_INVALID_REQUEST:
@@ -168,20 +214,25 @@ public class AppUpdateInstallState {
                     return ErrorCode.ERROR_INSTALL_NOT_ALLOWED;
                 case InstallErrorCode.ERROR_DOWNLOAD_NOT_PRESENT:
                     return ErrorCode.ERROR_DOWNLOAD_NOT_PRESENT;
+                case InstallErrorCode.ERROR_APP_NOT_OWNED:
+                    return ErrorCode.ERROR_APP_NOT_OWNED;
+                case InstallErrorCode.ERROR_PLAY_STORE_NOT_FOUND:
+                    return ErrorCode.ERROR_PLAY_STORE_NOT_FOUND;
                 case InstallErrorCode.ERROR_INTERNAL_ERROR:
                     return ErrorCode.ERROR_INTERNAL_ERROR;
                 case InstallErrorCode.ERROR_UNKNOWN:
+                    //noinspection deprecation
+                case InstallErrorCode.NO_ERROR_PARTIALLY_ALLOWED:
                 default:
                     return ErrorCode.ERROR_UNKNOWN;
             }
         }
 
-        @InstallErrorCode int getValue() {
+        @InstallErrorCode
+        int getValue() {
             switch (this) {
                 case NO_ERROR:
                     return InstallErrorCode.NO_ERROR;
-                case NO_ERROR_PARTIALLY_ALLOWED:
-                    return InstallErrorCode.NO_ERROR_PARTIALLY_ALLOWED;
                 case ERROR_API_NOT_AVAILABLE:
                     return InstallErrorCode.ERROR_API_NOT_AVAILABLE;
                 case ERROR_INVALID_REQUEST:
@@ -192,6 +243,10 @@ public class AppUpdateInstallState {
                     return InstallErrorCode.ERROR_INSTALL_NOT_ALLOWED;
                 case ERROR_DOWNLOAD_NOT_PRESENT:
                     return InstallErrorCode.ERROR_DOWNLOAD_NOT_PRESENT;
+                case ERROR_APP_NOT_OWNED:
+                    return InstallErrorCode.ERROR_APP_NOT_OWNED;
+                case ERROR_PLAY_STORE_NOT_FOUND:
+                    return InstallErrorCode.ERROR_PLAY_STORE_NOT_FOUND;
                 case ERROR_INTERNAL_ERROR:
                     return InstallErrorCode.ERROR_INTERNAL_ERROR;
                 case ERROR_UNKNOWN:
