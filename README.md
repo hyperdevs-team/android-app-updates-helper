@@ -37,7 +37,7 @@ Add the following dependencies to your app or library's `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation "com.github.bq:android-app-updates-helper:1.0.2"
+    implementation "com.github.bq:android-app-updates-helper:1.1.0"
 }
 ```
 </details>
@@ -47,7 +47,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("com.github.bq:android-app-updates-helper:1.0.2")
+    implementation("com.github.bq:android-app-updates-helper:1.1.0")
 }
 ```
 </details>
