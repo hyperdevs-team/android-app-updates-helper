@@ -122,7 +122,7 @@ and will set the application ID and signing configurations for you.
 * **[Adrián García](https://github.com/adriangl)** - *Author and maintainer*
 * **[Daniel Sánchez Ceinos](https://github.com/danielceinos)** - *Contributor*
 
-## Acnowledgements
+## Acknowledgements
 The work in this respository up to April 28th, 2021 was done by [bq](https://github.com/bq)
 
 ## License
