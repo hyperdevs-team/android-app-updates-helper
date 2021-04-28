@@ -1,5 +1,5 @@
 # Android App Updates Helper
-[![Release](https://jitpack.io/v/bq/android-app-updates-helper.svg)](https://jitpack.io/#bq/android-app-updates-helper)
+[![Release](https://jitpack.io/v/hyperdevs-team/android-app-updates-helper.svg)](https://jitpack.io/#hyperdevs-team/android-app-updates-helper)
 
 This utility library aims to help Android developers to use the [Google Play In-App Updates API](https://developer.android.com/guide/app-bundle/in-app-updates) in an easy way.
 
@@ -37,7 +37,7 @@ Add the following dependencies to your app or library's `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation "com.github.bq:android-app-updates-helper:1.1.0"
+    implementation "com.github.hyperdevs-team:android-app-updates-helper:2.0.0"
 }
 ```
 </details>
@@ -47,7 +47,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("com.github.bq:android-app-updates-helper:1.1.0")
+    implementation("com.github.hyperdevs-team:android-app-updates-helper:2.0.0")
 }
 ```
 </details>
@@ -123,12 +123,13 @@ and will set the application ID and signing configurations for you.
 * **[Daniel Sánchez Ceinos](https://github.com/danielceinos)** - *Contributor*
 
 ## Acknowledgements
-The work in this respository up to April 28th, 2021 was done by [bq](https://github.com/bq)
+The work in this repository up to April 28th, 2021 was done by [bq](https://github.com/bq).
+Thanks for all the work!!
 
 ## License
 This project is licensed under the Apache Software License, Version 2.0.
 ```
-Copyright (C) 2021 Hyperdevs
+Copyright (C) 2021 HyperDevs
 
 Copyright (C) 2019 BQ
 

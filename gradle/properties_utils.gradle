@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2020 BQ
+ * Copyright (C) 2021 HyperDevs
+ *
+ * Copyright (C) 2019 BQ
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +38,7 @@ def loadPropertiesFile(fileName) {
 /**
  * Utility method that tries to find a variable in the following places:
  * - System environment variable
+ * - Property in project properties
  * - Property in a properties file (the property will try to find the name in camel case)
  *
  * System environment property takes precedence over the property in a properties file.
@@ -55,22 +58,33 @@ def loadEnvOrProperty(String key, defaultValue = null, String propertiesFileName
     def result = System.getenv(envVarKey)
 
     if (result == null) {
-        logger.info("Environment variable \"$envVarKey\" not found, trying to find it in $propertiesFileName property \"$propertyKey\"")
+        logger.info("Environment variable \"$envVarKey\" not found, trying to find it in project property \"$propertyKey\"")
 
-        // Then try to get it from the properties file
-        def properties = loadPropertiesFile(propertiesFileName)
-
-        if (properties == null) {
-            // If none could be found, return the default value
-            logger.error("Requested file $propertiesFileName not found, returning default value")
-            return defaultValue
+        // Then, try to get it from project properties
+        try {
+            result = project.property(propertyKey)
+        } catch (e) {
+            result = null
         }
 
-        result = properties[propertyKey]
+        if (result == null) {
+            logger.info("Project property \"$propertyKey\" not found, trying to find it in $propertiesFileName property \"$propertyKey\"")
+
+            // Finally, try to get it from the properties file
+            def properties = loadPropertiesFile(propertiesFileName)
+
+            if (properties == null) {
+                // If none could be found, return the default value
+                logger.error("Requested file $propertiesFileName not found, returning default value")
+                return defaultValue
+            }
+
+            result = properties[propertyKey]
+        }
     }
 
     if (result == null) {
-        logger.error("Environment variable \"$envVarKey\" (or $propertiesFileName property \"$propertyKey\") not found, returning default value")
+        logger.error("Environment variable \"$envVarKey\" (or property \"$propertyKey\" in project properties or $propertiesFileName) not found, returning default value")
         return defaultValue
     }
     else {

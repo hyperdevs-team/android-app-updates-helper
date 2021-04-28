@@ -34,6 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [2.0.0] - 2021-04-28
+### Changed
+- Changed repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
+- Changed package names from `com.bq.*` to `com.hyperdevs.*`
+- Updated dependencies
+
 ## [1.1.0] - 2020-11-05
 ### Added
 - Add in-app update stale status (added in `play-core` 1.6.5)
@@ -60,8 +66,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/bq/android-app-updates-helper/compare/1.1.0...HEAD
-[1.1.0]: https://github.com/bq/android-app-updates-helper/compare/1.0.2...1.1.0
-[1.0.2]: https://github.com/bq/android-app-updates-helper/compare/1.0.1...1.0.2
-[1.0.1]: https://github.com/bq/android-app-updates-helper/compare/1.0.0...1.0.1
-[1.0.0]: https://github.com/bq/android-app-updates-helper/releases/tag/1.0.0
+[Unreleased]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.1.0...2.0.0
+[1.1.0]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.0.2...1.1.0
+[1.0.2]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/hyperdevs-team/android-app-updates-helper/releases/tag/1.0.0
