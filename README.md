@@ -122,9 +122,14 @@ and will set the application ID and signing configurations for you.
 * **[Adrián García](https://github.com/adriangl)** - *Author and maintainer*
 * **[Daniel Sánchez Ceinos](https://github.com/danielceinos)** - *Contributor*
 
+## Acnowledgements
+The work in this respository up to April 28th, 2021 was done by [bq](https://github.com/bq)
+
 ## License
 This project is licensed under the Apache Software License, Version 2.0.
 ```
+Copyright (C) 2021 Hyperdevs
+
 Copyright (C) 2019 BQ
 
 Licensed under the Apache License, Version 2.0 (the "License");
