@@ -79,7 +79,7 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.localRelease
+            //signingConfig signingConfigs.localRelease
         }
 
         release {
