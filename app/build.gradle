@@ -37,8 +37,9 @@ ext {
 }
 
 android {
-    compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
+    namespace "com.hyperdevs.appupdateshelper.app"
+    compileSdk = compile_sdk_version
+    buildToolsVersion = build_tools_version
 
     defaultConfig {
         /*
