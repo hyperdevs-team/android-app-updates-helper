@@ -19,7 +19,6 @@
 apply plugin: "com.android.application"
 
 apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
 
 apply plugin: "com.gladed.androidgitversion"
 
@@ -31,10 +30,10 @@ ext {
      * Android variables
      ********************
      */
-    compile_sdk_version = 30
+    compile_sdk_version = 34
     min_sdk_version = 21
-    target_sdk_version = 30
-    build_tools_version = "30.0.2"
+    target_sdk_version = 34
+    build_tools_version = "34.0.0"
 }
 
 android {
@@ -89,7 +88,7 @@ android {
         }
     }
 
-    sourceSets.all {
+    sourceSets.configureEach {
         java.srcDirs += "src/${name}/kotlin"
     }
 
@@ -109,13 +108,13 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.core:core-ktx:1.3.2"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.core:core-ktx:1.10.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
     testImplementation "junit:junit:4.13.2"
 
-    androidTestImplementation "androidx.test:runner:1.3.0"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
-    implementation "com.google.android.material:material:1.3.0"
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    implementation "com.google.android.material:material:1.9.0"
 }

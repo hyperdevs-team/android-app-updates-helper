@@ -26,14 +26,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.tasks.OnCompleteListener;
-import com.google.android.play.core.tasks.Task;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
