@@ -70,16 +70,16 @@ android {
          * property in signing.properties (converted to camelCase)
          */
         localRelease {
-            storeFile file(loadEnvOrProperty("KEYSTORE_PATH", "/", "app_config.properties"))
-            storePassword loadEnvOrProperty("KEYSTORE_PWD", "", "app_config.properties")
-            keyAlias loadEnvOrProperty("KEYSTORE_ALIAS", "", "app_config.properties")
-            keyPassword loadEnvOrProperty("KEYSTORE_ALIAS_PWD", "", "app_config.properties")
+            storeFile file(loadEnvOrProperty("KEYSTORE_PATH", new File(rootDir, "debug.keystore").path, "app_config.properties"))
+            storePassword loadEnvOrProperty("KEYSTORE_PWD", "android", "app_config.properties")
+            keyAlias loadEnvOrProperty("KEYSTORE_ALIAS", "androiddebugkey", "app_config.properties")
+            keyPassword loadEnvOrProperty("KEYSTORE_ALIAS_PWD", "android", "app_config.properties")
         }
     }
 
     buildTypes {
         debug {
-            //signingConfig signingConfigs.localRelease
+            signingConfig signingConfigs.localRelease
         }
 
         release {
