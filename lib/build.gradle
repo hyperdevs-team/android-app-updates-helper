@@ -38,7 +38,8 @@ ext {
 }
 
 android {
-    compileSdkVersion compile_sdk_version
+    namespace = "com.hyperdevs.appupdateshelper"
+    compileSdk = compile_sdk_version
     buildToolsVersion = build_tools_version
 
     defaultConfig {
@@ -78,27 +79,5 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 }
 
-// Build a jar with source files
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier.set("sources")
-}
+apply from: "../jitpack-android.gradle"
 
-// Build JavaDoc from source files
-task javadoc(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
-    configurations.implementation.setCanBeResolved(true)
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator)) + configurations.implementation
-}
-
-// Build a jar with JavaDoc
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set("javadoc")
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
