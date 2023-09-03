@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - No security issues fixed!
 
+## [2.1.4] - 2022-09-03
+### Changed
+- Updated up to Android 14
+
 ## [2.0.0] - 2021-04-28
 ### Changed
 - Changed repo ownership to [hyperdevs-team](https://github.com/hyperdevs-team). Thanks [bq](https://github.com/bq) for all the work!
@@ -66,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release.
 
-[Unreleased]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/2.1.4...HEAD
+[2.1.4]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.1.0...2.0.0
 [2.0.0]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/hyperdevs-team/android-app-updates-helper/compare/1.0.1...1.0.2
