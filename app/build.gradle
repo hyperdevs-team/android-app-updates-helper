@@ -49,7 +49,7 @@ android {
          * The loadEnvOrProperty will try to find the environment variable (in snake_case) or the
          * property in signing.properties (converted to camelCase)
          */
-        applicationId loadEnvOrProperty("APPLICATION_ID", "/", "app_config.properties")
+        applicationId loadEnvOrProperty("APPLICATION_ID", "com.hyperdevs.appupdateshelper.app", "app_config.properties")
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
